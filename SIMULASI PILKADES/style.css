@@ -1,0 +1,702 @@
+/* ==========================================================================
+   SIMULASI PILKADES - FULLY RESPONSIVE STYLESHEET
+   Supports PC / Desktop, Tablet / iPad, and Mobile Phones (HP)
+   ========================================================================== */
+
+:root {
+  --bg-gradient: linear-gradient(180deg, #eaf2fb 0%, #dde9f7 100%);
+  --header-blue: #2563eb;
+  --header-dark: #1e293b;
+  --card-border-default: #2563eb;
+  --card-border-selected: #dc2626;
+  --btn-navy: #1b3576;
+  --btn-navy-hover: #15295c;
+  --btn-blue: #2563eb;
+  --btn-blue-hover: #1d4ed8;
+  --btn-red: #ea4335;
+  --btn-red-hover: #dc2626;
+  --text-primary: #1e293b;
+  --text-muted: #64748b;
+  --shadow-card: 0 4px 18px rgba(37, 99, 235, 0.12);
+  --modal-bg: rgba(15, 23, 42, 0.65);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   MAIN APP CONTAINER - RESPONSIVE FOR ALL SCREENS
+   ========================================================================== */
+.app-container {
+  width: 100%;
+  max-width: 860px;
+  min-height: 100vh;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Screen Views */
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: 24px 16px;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+.screen.hidden {
+  display: none !important;
+  opacity: 0;
+}
+
+/* ==========================================================================
+   BALLOT SCREEN (SURAT SUARA)
+   ========================================================================== */
+
+.ballot-header {
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+
+.ballot-header .main-title {
+  color: var(--header-blue);
+  font-size: clamp(20px, 4vw, 30px);
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
+}
+
+.ballot-header .sub-title {
+  color: #1e3a5f;
+  font-size: clamp(12px, 2.2vw, 16px);
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: 0.3px;
+}
+
+/* Candidate Grid: Always 2 Columns for Side-by-Side Ballot View */
+.candidate-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.candidate-card {
+  background: transparent;
+  border-radius: 16px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  user-select: none;
+}
+
+.candidate-card:hover {
+  transform: translateY(-3px);
+  filter: drop-shadow(0 10px 22px rgba(37, 99, 235, 0.28));
+}
+
+.candidate-card:active {
+  transform: scale(0.98);
+}
+
+/* Selected state - Red glow */
+.candidate-card.selected {
+  filter: drop-shadow(0 8px 24px rgba(220, 38, 38, 0.45));
+  animation: pulseSelect 0.3s ease;
+}
+
+.candidate-card img.card-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+  object-fit: contain;
+}
+
+@keyframes pulseSelect {
+  0% { transform: scale(0.97); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+/* Bottom Action Button */
+.ballot-footer {
+  width: 100%;
+  max-width: 480px;
+  margin: 28px auto 12px;
+  padding: 0 8px;
+}
+
+.btn-primary-action {
+  width: 100%;
+  background: var(--btn-navy);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: clamp(13px, 2.2vw, 17px) 24px;
+  font-size: clamp(14px, 2.2vw, 17px);
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(27, 53, 118, 0.3);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary-action:hover {
+  background: var(--btn-navy-hover);
+  box-shadow: 0 6px 18px rgba(27, 53, 118, 0.45);
+}
+
+.btn-primary-action:active {
+  transform: translateY(1px);
+}
+
+/* ==========================================================================
+   MODAL BACKDROP (FIXED FULL-VIEWPORT OVERLAY)
+   ========================================================================== */
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--modal-bg);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.modal-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ==========================================================================
+   PHOTO 2: ALERT MODAL (BELUM MEMILIH KANDIDAT)
+   ========================================================================== */
+
+.alert-dialog {
+  background: #1f232d;
+  color: #ffffff;
+  border-radius: 16px;
+  padding: 24px 26px 18px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  transform: scale(0.92);
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-backdrop.active .alert-dialog {
+  transform: scale(1);
+}
+
+.alert-text {
+  font-size: clamp(14px, 2.2vw, 16px);
+  line-height: 1.5;
+  color: #ffffff;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.alert-action {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-tutup {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  font-size: 15.5px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.btn-tutup:hover {
+  background: rgba(59, 130, 246, 0.15);
+}
+
+/* ==========================================================================
+   PHOTO 4: CONFIRMATION MODAL (KONFIRMASI PEMILIHAN)
+   ========================================================================== */
+
+.confirm-dialog {
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 28px 24px 22px;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+  transform: scale(0.92);
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-backdrop.active .confirm-dialog {
+  transform: scale(1);
+}
+
+.confirm-title {
+  font-size: clamp(17px, 2.5vw, 20px);
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.confirm-subtitle {
+  font-size: clamp(13px, 2vw, 15px);
+  color: #334155;
+  font-weight: 500;
+  margin-bottom: 18px;
+}
+
+.confirm-photo-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.confirm-photo-box {
+  width: clamp(110px, 18vw, 135px);
+  aspect-ratio: 3 / 4;
+  background: #c40008;
+  border: 2px solid #1e3a8a;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.confirm-photo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.confirm-name {
+  font-size: clamp(14px, 2.2vw, 16px);
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: 0.8px;
+  margin-bottom: 24px;
+}
+
+.confirm-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.btn-ulangi {
+  background: var(--btn-red);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-size: clamp(13px, 2vw, 15px);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-ulangi:hover {
+  background: var(--btn-red-hover);
+}
+
+.btn-ulangi:active {
+  transform: translateY(1px);
+}
+
+.btn-pilih {
+  background: var(--btn-navy);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-size: clamp(13px, 2vw, 15px);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-pilih:hover {
+  background: var(--btn-navy-hover);
+}
+
+.btn-pilih:active {
+  transform: translateY(1px);
+}
+
+/* ==========================================================================
+   PHOTO 5: SUCCESS MODAL (TERIMA KASIH)
+   ========================================================================== */
+
+.success-dialog {
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 34px 26px 30px;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+  transform: scale(0.92);
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-backdrop.active .success-dialog {
+  transform: scale(1);
+}
+
+.success-badge {
+  width: 62px;
+  height: 62px;
+  background: #00c853;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  box-shadow: 0 8px 20px rgba(0, 200, 83, 0.35);
+  animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.success-badge svg {
+  width: 38px;
+  height: 38px;
+  stroke: #ffffff;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.success-title {
+  font-size: clamp(19px, 3vw, 23px);
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.success-subtitle {
+  font-size: clamp(14px, 2.2vw, 16.5px);
+  font-weight: 700;
+  color: #10b981;
+  margin-bottom: 10px;
+}
+
+.success-loading {
+  font-size: 13px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.dot-pulse {
+  display: inline-block;
+  animation: dotPulseAnim 1.4s infinite ease-in-out;
+}
+
+@keyframes dotPulseAnim {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+/* ==========================================================================
+   PHOTO 6: RECEIPT / QR CODE SCREEN
+   ========================================================================== */
+
+#screen-receipt {
+  justify-content: center;
+  align-items: center;
+  padding: 30px 16px;
+}
+
+.receipt-card {
+  background: #ffffff;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 420px;
+  padding: 32px 24px 28px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.09);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: slideUp 0.35s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(18px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.receipt-title {
+  color: var(--btn-navy);
+  font-size: clamp(16px, 2.5vw, 19px);
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  margin-bottom: 20px;
+}
+
+/* QR Code Box */
+.qr-frame {
+  width: clamp(190px, 28vw, 225px);
+  height: clamp(190px, 28vw, 225px);
+  border: 1.5px solid var(--btn-navy);
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  margin-bottom: 16px;
+}
+
+.qr-frame canvas,
+.qr-frame img {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* Result Info */
+.receipt-info {
+  font-size: clamp(12.5px, 2vw, 14.5px);
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 20px;
+}
+
+.receipt-info span.bold {
+  font-weight: 700;
+}
+
+/* Buttons inside receipt */
+.receipt-actions {
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.btn-receipt-blue {
+  width: 100%;
+  background: #1d58d8;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px 18px;
+  font-size: clamp(13px, 2vw, 14.5px);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.btn-receipt-blue:hover {
+  background: #194bc0;
+}
+
+.btn-receipt-blue:active {
+  transform: translateY(1px);
+}
+
+/* Disclaimer text */
+.receipt-disclaimer {
+  font-size: clamp(11px, 1.8vw, 12.5px);
+  color: #64748b;
+  line-height: 1.45;
+  margin-bottom: 20px;
+  padding: 0 8px;
+}
+
+.btn-kembali {
+  width: 100%;
+  max-width: 340px;
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 13.5px 18px;
+  font-size: clamp(13.5px, 2vw, 15px);
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-kembali:hover {
+  background: #1d4ed8;
+}
+
+.btn-kembali:active {
+  transform: translateY(1px);
+}
+
+/* ==========================================================================
+   MEDIA QUERIES FOR TABLET & PC / DESKTOP ENHANCEMENTS
+   ========================================================================== */
+
+/* Tablet & iPad (min-width: 640px) */
+@media (min-width: 640px) {
+  .screen {
+    padding: 36px 28px;
+  }
+
+  .ballot-header {
+    margin-bottom: 32px;
+  }
+
+  .candidate-grid {
+    gap: 24px;
+    max-width: 580px;
+  }
+
+  .ballot-footer {
+    margin-top: 36px;
+  }
+}
+
+/* PC / Large Desktop (min-width: 1024px) */
+@media (min-width: 1024px) {
+  .app-container {
+    max-width: 920px;
+    padding: 20px 0;
+  }
+
+  .screen {
+    padding: 44px 36px;
+  }
+
+  .ballot-header {
+    margin-bottom: 40px;
+  }
+
+  .candidate-grid {
+    gap: 36px;
+    max-width: 680px;
+  }
+
+  .ballot-footer {
+    margin-top: 40px;
+  }
+}
+
+/* Small mobile devices (max-width: 380px) */
+@media (max-width: 380px) {
+  .candidate-grid {
+    gap: 10px;
+  }
+  
+  .screen {
+    padding: 16px 10px;
+  }
+}
+
+/* ==========================================================================
+   PRINT STYLES FOR CETAK ULANG (Thermal or standard receipt)
+   ========================================================================== */
+
+@media print {
+  body {
+    background: #ffffff !important;
+    padding: 0 !important;
+  }
+
+  .modal-backdrop,
+  .receipt-actions,
+  .btn-kembali,
+  #screen-ballot {
+    display: none !important;
+  }
+
+  .app-container {
+    max-width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  #screen-receipt {
+    display: flex !important;
+    padding: 0 !important;
+  }
+
+  .receipt-card {
+    box-shadow: none !important;
+    border: 1px dashed #94a3b8 !important;
+    max-width: 320px !important;
+    margin: 0 auto !important;
+    padding: 16px !important;
+  }
+}
